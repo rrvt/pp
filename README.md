@@ -1,6 +1,6 @@
 # pp -- Print Program(s)
 
-Two versions of the same application, on callable from CommandLine (i.e. the Dos Box) and one a windows
+Two versions of the same application, one callable from CommandLine (i.e. the Dos Box) and one a windows
 version.  The goal is to produce a printed output where chunks of code separated by two lines from other
 chunks of code appear on one page in so far as it is practical for that to happen.  If a chunk is too big
 to fit on a page, then pick a single blank line to break the page, and so on...
@@ -9,12 +9,12 @@ to fit on a page, then pick a single blank line to break the page, and so on...
 
 This version was created with Visual Studion 2017.  It was compiled with the following properties:
 
-  o Windows SDK Version: 10.0.18362.0
-  o Platform Toolset: visual Studio 2017 (v141)
-  o MFC: Use MFC in a Shared DLL
-  o Character Set:  Use Unicode Character Set
-  o Precompiled Header:  Not Using Precompiled Headers
-  o Linker/Additional Dependencies:  Htmlhelp.lib.
+  - Windows SDK Version: 10.0.18362.0
+  - Platform Toolset: visual Studio 2017 (v141)
+  - MFC: Use MFC in a Shared DLL
+  - Character Set:  Use Unicode Character Set
+  - Precompiled Header:  Not Using Precompiled Headers
+  - Linker/Additional Dependencies:  Htmlhelp.lib.
 
 The HTML Help Workshop (HHW), Version 4.74.8702.0 was used to prepare the help file (WixApp.chm).  It is
 copied into the Release directory.  I used Dreamweaver (DW) to do most of the content production of the
@@ -29,22 +29,22 @@ hand for changes.
 
 The following tools must be available to build these applications:
 
-  o Visual Studio 2017 (VS17) or later.
-  o The WiX Toolset must be installed in Visual Studio.
-  o The "HTML Help Workshop" (google it) must be installed.
+  - Visual Studio 2017 (VS17) or later.
+  - The WiX Toolset must be installed in Visual Studio.
+  - The "HTML Help Workshop" (google it) must be installed.
 
 Optional Tools:
 
-  o WixApp -- Application to produce a Wix Product.wxs file (see GitHub)
+  - WixApp -- Application to produce a Wix Product.wxs file (see GitHub)
 
 ### Build Procedure
 
 Build in SlickEdit or VS17:
 
-  o Find the Solution file: .../Sources/pp/pp/pp.sln.
-  o Open the Solution File in VS17 or SlickEdit
-  o Optional -- Execute command Build/Clean Solution
-  o Execute command Build/Build Solution
+  - Find the Solution file: .../Sources/pp/pp/pp.sln.
+  - Open the Solution File in VS17 or SlickEdit
+  - Optional -- Execute command Build/Clean Solution
+  - Execute command Build/Build Solution
 
 If all the prequisites are available then it should compile and link all products into the current
 configuration directory (e.g. .../Sources/pp/Debug/, or .../Sources/pp/Release/).  All the build products
@@ -65,8 +65,8 @@ help file for details.  It only knows about files in the current directory unles
 the name.  Failure to find the file to be printed will just result in nothing happening.  Here is a
 typical sequence:
 
-  o cd .../Source/pp.prj
-  o pp *.h *.cpp
+  - cd .../Source/pp.prj
+  - pp *.h *.cpp
 
 The output of a slew of files will be output to the default printer (be warned).
 
