@@ -33,15 +33,14 @@
 #define IDC_CurPath                     219
 #define IDC_BUTTON1                     220
 
-#define ID_ABOUT                        400
-#define ID_Help                         401
-#define ID_SelectFolder                 402
-#define ID_PopupMenu                    403
-#define ID_X_Tweak                      404
-#define ID_Y_Tweak                      405
-#define ID_Print                        406
-#define ID_Exit                         407
-#define ID_EditExtensions               408
+#define ID_Help                         400
+#define ID_SelectFolder                 401
+#define ID_PopupMenu                    402
+#define ID_X_Tweak                      403
+#define ID_Y_Tweak                      404
+#define ID_Print                        405
+#define ID_Exit                         406
+#define ID_EditExtensions               407
 
 // Next default values for new objects
 //

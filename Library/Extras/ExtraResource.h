@@ -4,11 +4,11 @@
 #pragma once
 
 #define IDD_AboutBox      0x0010
-#define IDS_AboutBox      501
-#define IDC_NameVer       502
-#define IDC_Copyright     503
-#define IDC_CompanyName   504
-#define ID_App_About      505
+#define IDS_AboutBox      500
+#define IDC_NameVer       501
+#define IDC_Copyright     502
+#define IDC_CompanyName   503
+#define ID_App_About      504
 
 #define IDD_Calibrate     505
 #define IDC_CalibInstr    506

@@ -38,7 +38,7 @@ static const CbxItem PopupItems[] = {{_T("Calibrate X"),     ID_X_Tweak},
 BEGIN_MESSAGE_MAP(PPrintDlg, CDialogEx)
   ON_COMMAND(      ID_SelectFolder,   &OnSelectFolder)
   ON_COMMAND(      ID_Print,          &OnFilePrint)
-  ON_COMMAND(      ID_ABOUT,          &OnAbout)
+  ON_COMMAND(      ID_App_About,      &OnAbout)
   ON_BN_CLICKED(   IDC_AfterDt,       &OnBnClickedAfterDt)
   ON_BN_CLICKED(   IDC_AfterTm,       &OnBnClickedAfterDt)
 

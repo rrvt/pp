@@ -7,7 +7,6 @@
 #include "TBComboBox.h"
 #include "TBEditBox.h"
 #include "TBMenuButton.h"
-#include "TBPopupMenu.h"
 #ifdef DsplyHistory
 #include "History.h"                      // Debug Only
 #endif
@@ -59,7 +58,7 @@ TBBtnCtx& ctx = addCtx(id);   ctx.initialize(winWidth, winHeight);   getFontDim(
 
 
 bool ToolBar::installPopupMenu(uint id) {
-TBPopupMenu btn(id);
+TBComboBox btn(id);
 TBBtnCtx&   ctx = addCtx(id);   ctx.initialize(winWidth, winHeight);   getFontDim(ctx);
 
   btn.install(ctx);
@@ -71,7 +70,7 @@ TBBtnCtx&   ctx = addCtx(id);   ctx.initialize(winWidth, winHeight);   getFontDi
 bool ToolBar::addPopupItems(uint id, const CbxItem* items, int noItems, bool sorted) {
 TBBtnCtx& ctx = *findCtx(id);   if (!&ctx) return false;
 
-  if (TBPopupMenu::addItems(id, items, noItems, ctx, sorted)) adjust(ctx);
+  if (TBComboBox::addItems(id, items, noItems, ctx, sorted)) adjust(ctx);
 
   return true;
   }
@@ -80,7 +79,7 @@ TBBtnCtx& ctx = *findCtx(id);   if (!&ctx) return false;
 bool ToolBar::addPopupItem(uint id, CbxItem& item, bool sorted) {
 TBBtnCtx& ctx = *findCtx(id);   if (!&ctx) return false;
 
-  if (TBPopupMenu::addItem(id, item, ctx, sorted)) adjust(ctx);
+  if (TBComboBox::addItem(id, item, ctx, sorted)) adjust(ctx);
 
   return true;
   }
@@ -91,20 +90,20 @@ TBBtnCtx& ctx = *findCtx(id);   if (!&ctx) return false;
 void ToolBar::addPopupMenu(uint id, uint idr, bool sorted) {
 TBBtnCtx& ctx = *findCtx(id);   if (!&ctx) return;
 
-  if (TBPopupMenu::addMenu(id, idr, ctx, sorted)) adjust(ctx);
+  if (TBComboBox::addRes(id, idr, ctx, sorted)) adjust(ctx);
   }
 
 
 void ToolBar::setPopupCaption(uint id, TCchar* caption) {
 TBBtnCtx& ctx = *findCtx(id);   if (!&ctx) return;
 
-  TBPopupMenu::setCaption(id, caption, ctx);   adjust(ctx);
+  TBComboBox::setCaption(id, caption, ctx);   adjust(ctx);
   }
 
 
 
 void ToolBar::dispatch(uint id, TCchar* caption)
-      {uint cmdID = TBPopupMenu::getCmdId(id, caption);   if (cmdID) PostMessage(WM_COMMAND, cmdID, 0);}
+      {uint cmdID = TBComboBox::getCmdId(id, caption);   if (cmdID) PostMessage(WM_COMMAND, cmdID, 0);}
 
 
 bool ToolBar::installMenu(uint id, uint idr, TCchar* caption) {
@@ -126,7 +125,7 @@ TBBtnCtx& ctx = *findCtx(id);   if (!&ctx) return;
 void ToolBar::addCbxItem (uint id, CbxItem& item, bool sorted) {
 TBBtnCtx& ctx = *findCtx(id);   if (!&ctx) return;
 
-  if (TBComboBox::add(id, item, ctx, sorted)) adjust(ctx);
+  if (TBComboBox::addItem(id, item, ctx, sorted)) adjust(ctx);
   }
 
 

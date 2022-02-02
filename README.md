@@ -83,6 +83,17 @@ application for the right and bottom margin values.  Since the pixel density is 
 printer the values chosen do not represent inches or even pixels.  The help file in pprint should help
 pick values...
 
+##Updates
+
+### Update 01/31/22
+
+Updates to the library, mostly about the toolbar, but also NewAllocator, and a minor addition to
+Expandable.
+
+Also scrubbed the project files to remove all references to precompiled header files which I turned off
+in VS17.  Unfortnately VS does not remove all references and pch files kept cropping up.  Not only does
+that slow down the compiler but the files are large...
+
 ## Authors
 
 Robert R. Van Tuyl

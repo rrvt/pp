@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+
+<Product Id="*" UpgradeCode="85AB0D11-3498-437B-9CB3-FE36789C3D4A" Language="1033"
+         Manufacturer="Bob -- K6RWY" Name="PPrint"
+         Version="!(bind.fileVersion.PPrint.cmp)"
+         >
+
+  <Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine"
+           Manufacturer="Bob -- K6RWY" Description="Installs PPrint"
+           Comments="Copyright (c) Bob -- K6RWY"
+           />
+
+  <MajorUpgrade Schedule="afterInstallInitialize"
+                AllowDowngrades="no"   IgnoreRemoveFailure="no"   AllowSameVersionUpgrades="no"
+                DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+
+  <MediaTemplate EmbedCab="yes" />
+
+  <UI Id="My_InstallDir.ui">
+    <UIRef Id="WixUI_InstallDir" />
+    <Publish Dialog="WelcomeDlg" Control="Next" Event="NewDialog" Value="InstallDirDlg">
+      NOT Installed
+    </Publish>
+    <Publish Dialog="InstallDirDlg" Control="Back" Event="NewDialog" Value="WelcomeDlg" Order="2">
+      1
+    </Publish>
+  </UI>
+
+  <WixVariable Id="WixUIDialogBmp" Value="C:\Program Files (x86)\WixApp\dialog.bmp"/>
+  <WixVariable Id="WixUIBannerBmp" Value="C:\Program Files (x86)\WixApp\banner.bmp"/>
+
+  <Icon     Id="pprint02Icon.ico" SourceFile="$(var.SolutionDir)..\pprint.prj\res\pprint02.ico"/>
+  <Property Id="ARPPRODUCTICON"  Value="pprint02Icon.ico" />
+
+  <Feature Id="ProductFeatures" Title="Main Product" Level="1" >
+    <ComponentGroupRef Id="PPrint.ftr"/>
+    <ComponentGroupRef Id="UninstallPPrint.ftr"/>
+  </Feature>
+</Product>
+
+<Fragment>
+<ComponentGroup Id="PPrint.ftr">
+  <ComponentRef Id="PPrint.cmp"/>
+</ComponentGroup>
+<ComponentGroup Id="UninstallPPrint.ftr">
+  <ComponentRef Id="UninstallPPrint.cmp"/>
+</ComponentGroup>
+</Fragment>
+
+<!--Directory structure-->
+<Fragment>
+  <Directory Id="TARGETDIR" Name="SourceDir">
+    <Directory Id="ProgramFilesFolder">
+      <Directory Id="PPrint.pff" Name="PPrint" />
+    </Directory>
+
+    <Directory Id="ProgramMenuFolder" Name="StartMenu">
+      <Directory Id="PPrint.pmf" Name="PPrint" />
+    </Directory>
+
+    <Directory Id="DesktopFolder" Name="Desktop" />
+  </Directory>
+
+  <Property Id="ApplicationFolderName" Value="PPrint" />
+  <Property Id="WIXUI_INSTALLDIR"      Value="PPrint.pff"/>
+  <Property Id="WixAppFolder"          Value="WixPerMachineFolder" />
+</Fragment>
+
+<Fragment>
+
+  <Component Id="PPrint.cmp"  Guid="1D949DF5-03F1-4930-A89B-034C24E15D09" Directory="PPrint.pff">
+    <File Id="PPrint.cmp" Source="$(var.SolutionDir)..\Release\pprint.exe" KeyPath="yes"/>
+
+    <Shortcut Id               = "PPrint.shc"
+              Name             = "PPrint"
+              Description      = "Print Program"
+              Advertise        = "yes"
+              Directory        = "PPrint.pmf"
+              WorkingDirectory = "PPrint.pff"
+              Icon             = "pprint02Icon.ico"
+              />
+
+    <Shortcut Id               = "PPrint.dsk"
+              Name             = "PPrint"
+              Description      = "Print Program"
+              Advertise        = "yes"
+              Directory        = "DesktopFolder"
+              WorkingDirectory = "PPrint.pff"
+              Icon             = "pprint02Icon.ico"
+              />
+  </Component>
+
+</Fragment>
+
+<Fragment>
+
+  <Component Id="UninstallPPrint.cmp"  Guid="04D6B5C6-3AA7-4EFE-9452-47B30F22BF02"
+                                                                              Directory="PPrint.pmf">
+
+    <Shortcut Id               = "UninstallPPrint.shc"
+              Name             = "Uninstall PPrint"
+              Description      = "Uninstalls PPrint"
+              Target           = "[System64Folder]msiexec.exe"
+              Arguments        = "/x [ProductCode]"
+              Icon             = "pprint02Icon.ico"
+              />
+    <RemoveFolder Id="PPrint.uni" Directory="PPrint.pmf" On="uninstall"/>
+    <RegistryValue Root="HKCU" Key="Software\UninstallPPrint.cmp" Name="installed"
+                   Type="integer" Value="1" KeyPath="yes"/>
+  </Component>
+
+</Fragment>
+
+</Wix>
