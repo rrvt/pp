@@ -283,7 +283,7 @@ int i;
 /* close output, flushing buffer and terminating page */
 
 void Blkdpo::close(void) {
-Tchar* p;
+TCchar* p;
 
   while (printer.printPage(this)) continue;
 

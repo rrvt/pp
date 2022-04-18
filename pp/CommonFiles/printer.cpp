@@ -257,7 +257,7 @@ TCchar* q   = _tcsrchr(name, _T('\\'));   if (q) dev = q + 1;
   if (!iniFile.readString(dev, Font, font)) {
     _tprintf(_T("\nIniFile, %s,\ndid not contain [%s], setting to defaults\n"),
                                                                               iniFile.path().str(), dev);
-    iniFile.writeString(dev, Font, String(_T("Courier New")));
+    iniFile.writeString(dev, Font, _T("Courier New"));
     iniFile.writeInt(dev,    CharsPerLine,  80);
     iniFile.writeInt(dev,    XOffsetOddPg,   0);
     iniFile.writeInt(dev,    XOffsetEvenPg,  0);

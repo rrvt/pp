@@ -85,7 +85,7 @@ int      noArgs = 0;
   if (ch < _T('0') || ch > _T('9')) {after.getTime(s);                    noArgs = 1;}
   else                              {after.getDate(s); after.getTime(s1); noArgs = 2;}
 
-  file.setAfterTime(after.toTimeT());    return noArgs;
+  CTime tm = after.toTimeT();   file.setAfterTime(tm);   return noArgs;
   }
 
 
