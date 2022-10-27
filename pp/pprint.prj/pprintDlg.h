@@ -4,6 +4,7 @@
 
 #pragma once
 #include "ToolBar.h"
+#include "WinPos.h"
 
 
 // PPrintDlg dialog
@@ -13,6 +14,9 @@ String        helpPath;
 
 HICON         m_hIcon;
 ToolBar       toolBar;
+
+bool          isInitialized;
+WinPos        winPos;                                // Position of dialog box
 
 CStatic       pathCtrl;
 CButton       afterDtCtrl;
@@ -77,6 +81,8 @@ public:
   afx_msg UINT    OnNotifyFormat(CWnd *pWnd, UINT nCommand);
   afx_msg LRESULT OnResetToolBar(WPARAM wParam, LPARAM lParam);
 
+  afx_msg void    OnMove(int x, int y);
+  afx_msg void    OnSize(UINT nType, int cx, int cy);
   afx_msg void    OnSysCommand(UINT nID, LPARAM lParam);
   afx_msg void    OnPaint();
   afx_msg HCURSOR OnQueryDragIcon();

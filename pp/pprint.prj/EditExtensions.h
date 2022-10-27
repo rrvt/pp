@@ -13,7 +13,7 @@ public:
   enum { IDD = IDD_EditExtensions };                           // Dialog Data
 #endif
 
-CString extensions;
+Cstring extensions;
 
            EditExtensions(CWnd* pParent = nullptr);   // standard constructor
   virtual ~EditExtensions();

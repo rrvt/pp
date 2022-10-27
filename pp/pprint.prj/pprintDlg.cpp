@@ -51,6 +51,8 @@ BEGIN_MESSAGE_MAP(PPrintDlg, CDialogEx)
   ON_COMMAND(      ID_Exit,           &OnExit)
   ON_NOTIFY_EX( TTN_NEEDTEXT, 0,   &OnTtnNeedText)
 
+  ON_WM_MOVE()
+  ON_WM_SIZE()
   ON_WM_SYSCOMMAND()
   ON_WM_PAINT()
   ON_WM_QUERYDRAGICON()
@@ -64,12 +66,13 @@ END_MESSAGE_MAP()
 PPrintDlg::PPrintDlg(TCchar* helpPth, CWnd* pParent) : helpPath(helpPth), CDialogEx(IDD_pprint, pParent),
   m_hIcon(AfxGetApp()->LoadIcon(IDR_MAINFRAME)), doubleSided(FALSE), acceptExtension(FALSE),
   printHeader(FALSE), searchSubDirs(FALSE), tabStopSpacing(_T("")),
-  afterDt(FALSE), afterTm(FALSE),
+  afterDt(FALSE), afterTm(FALSE), isInitialized(false),
   afterDate(COleDateTime::GetCurrentTime()), afterTime(COleDateTime::GetCurrentTime()),
   nameLine(_T("")) { }
 
 
 BOOL PPrintDlg::OnInitDialog() {
+CRect winRect;
                                                         // Initialize data in variables before dialog init
   readDlgData();
 
@@ -102,15 +105,28 @@ BOOL PPrintDlg::OnInitDialog() {
   afterDateCtrl.SetFormat(_T("MM/dd/yy"));
   afterTimeCtrl.SetFormat(_T("HHmm"));
 
-//  UpdateData(true);
+  GetWindowRect(&winRect);   toolBar.move(winRect);   SetBackgroundColor(RGB(255,255,255));
 
-//  toolBar.setPopupCaption(ID_PopupMenu, MenuCaption);
-
-  return TRUE;                                      // return TRUE unless you set the focus to a control
+  winPos.initialPos(this, winRect);   isInitialized = true;   return TRUE;
   }
 
 
 // MainFrame message handlers
+
+void PPrintDlg::OnMove(int x, int y)
+            {CRect winRect;   GetWindowRect(&winRect);   winPos.set(winRect);   CDialogEx::OnMove(x, y);}
+
+
+void PPrintDlg::OnSize(UINT nType, int cx, int cy) {
+CRect winRect;
+
+  CDialogEx::OnSize(nType, cx, cy);
+
+  if (!isInitialized) return;
+
+  GetWindowRect(&winRect);   winPos.set(winRect);   toolBar.move(winRect);
+  }
+
 
 LRESULT PPrintDlg::OnResetToolBar(WPARAM wParam, LPARAM lParam) {setupToolBar();  return 0;}
 

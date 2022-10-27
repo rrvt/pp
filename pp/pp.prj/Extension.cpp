@@ -48,13 +48,13 @@ String extension = getExtension(name);
 
 
 
-void Extension::readExtensions(CString& cs) {
+void Extension::readExtensions(Cstring& cs) {
 
   if (!iniFile.readString(Globals, Extensions, cs)) cs = defaultExt;
   }
 
 
-void Extension::writeExtensions(CString& cs) {
+void Extension::writeExtensions(Cstring& cs) {
   iniFile.writeString(Globals, Extensions, cs);
   }
 

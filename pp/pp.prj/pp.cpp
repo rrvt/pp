@@ -61,7 +61,7 @@ String      tok;
 
   if (argc < 2) {commandLine.help(); return 0;}
 
-  if (!iniFile.getAppDataPath(commandLine.startLoop()->str()))
+  if (iniFile.getAppDataPath(commandLine.startLoop()->str()).isEmpty())
                             {_tprintf(_T("Unable to open/create initialization file.")); return 0;}
 
   for (p = commandLine.startLoop(), i = 0; p; p = commandLine.nextArg(), i++) {

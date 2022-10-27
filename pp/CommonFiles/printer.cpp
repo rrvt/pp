@@ -252,7 +252,7 @@ static TCchar* Font          = _T("Font");
 
 void Printer::getPrinterParms() {
 TCchar* dev = name;
-TCchar* q   = _tcsrchr(name, _T('\\'));   if (q) dev = q + 1;
+TCchar* q   = _tcsrchr(name.str(), _T('\\'));   if (q) dev = q + 1;
 
   if (!iniFile.readString(dev, Font, font)) {
     _tprintf(_T("\nIniFile, %s,\ndid not contain [%s], setting to defaults\n"),

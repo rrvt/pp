@@ -19,8 +19,8 @@ public:
   bool isLegal(TCchar* name);
   void setIgnoreExt(bool ignore) {ignoreExt = ignore;}
 
-  void readExtensions( CString& cs);
-  void writeExtensions(CString& cs);
+  void readExtensions( Cstring& cs);
+  void writeExtensions(Cstring& cs);
   };
 
 

@@ -85,6 +85,10 @@ pick values...
 
 ##Updates
 
+### Update 10/26/22
+
+Added position and size logic.  Updated the dialog box and toolbar backgrounds.
+
 ### Update 8/3/22
 
 Minor Library Update.
