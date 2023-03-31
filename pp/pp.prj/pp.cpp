@@ -27,7 +27,7 @@
 /* and time, and page number.           */
 
 
-#include "stdafx.h"
+#include "pch.h"
 #include "CommandLine.h"
 #include "Display.h"
 #include "Extension.h"

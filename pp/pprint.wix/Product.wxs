@@ -2,18 +2,18 @@
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
 
 <Product Id="*" UpgradeCode="85AB0D11-3498-437B-9CB3-FE36789C3D4A" Language="1033"
-         Manufacturer="Bob -- K6RWY" Name="PPrint"
-         Version="!(bind.fileVersion.PPrint.cmp)"
-         >
+                  Manufacturer="Bob -- K6RWY" Name="PPrint"
+                  Version="!(bind.fileVersion.PPrint.cmp)"
+                  >
 
   <Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine"
-           Manufacturer="Bob -- K6RWY" Description="Installs PPrint"
-           Comments="Copyright (c) Bob -- K6RWY"
-           />
+                      Manufacturer="Bob -- K6RWY" Description="Installs PPrint"
+                      Comments="Copyright (c) Bob -- K6RWY"
+                      />
 
   <MajorUpgrade Schedule="afterInstallInitialize"
-                AllowDowngrades="no"   IgnoreRemoveFailure="no"   AllowSameVersionUpgrades="no"
-                DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+                                AllowDowngrades="no"   IgnoreRemoveFailure="no"   AllowSameVersionUpgrades="no"
+                                DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
 
   <MediaTemplate EmbedCab="yes" />
 
@@ -30,12 +30,12 @@
   <WixVariable Id="WixUIDialogBmp" Value="C:\Program Files (x86)\WixApp\dialog.bmp"/>
   <WixVariable Id="WixUIBannerBmp" Value="C:\Program Files (x86)\WixApp\banner.bmp"/>
 
-  <Icon     Id="pprint02Icon.ico" SourceFile="$(var.SolutionDir)..\pprint.prj\res\pprint02.ico"/>
-  <Property Id="ARPPRODUCTICON"  Value="pprint02Icon.ico" />
+  <Icon     Id="pprint_Icon.exe" SourceFile="$(var.SolutionDir)..\pprint.prj\res\pprint.ico"/>
+  <Property Id="ARPPRODUCTICON"  Value="pprint_Icon.exe" />
 
   <Feature Id="ProductFeatures" Title="Main Product" Level="1" >
     <ComponentGroupRef Id="PPrint.ftr"/>
-    <ComponentGroupRef Id="UninstallPPrint.ftr"/>
+    <ComponentGroupRef Id="Uninstall_PPrint.ftr"/>
   </Feature>
 </Product>
 
@@ -44,8 +44,8 @@
   <ComponentRef Id="PPrint.cmp"/>
   <ComponentRef Id="Help.cmp"/>
 </ComponentGroup>
-<ComponentGroup Id="UninstallPPrint.ftr">
-  <ComponentRef Id="UninstallPPrint.cmp"/>
+<ComponentGroup Id="Uninstall_PPrint.ftr">
+  <ComponentRef Id="Uninstall_PPrint.cmp"/>
 </ComponentGroup>
 </Fragment>
 
@@ -56,11 +56,12 @@
       <Directory Id="PPrint.pff" Name="PPrint" />
     </Directory>
 
-    <Directory Id="ProgramMenuFolder" Name="StartMenu">
+    <Directory Id="ProgramMenuFolder">
       <Directory Id="PPrint.pmf" Name="PPrint" />
     </Directory>
 
-    <Directory Id="DesktopFolder" Name="Desktop" />
+    <Directory Id="DesktopFolder" />
+
   </Directory>
 
   <Property Id="ApplicationFolderName" Value="PPrint" />
@@ -79,7 +80,7 @@
               Advertise        = "yes"
               Directory        = "PPrint.pmf"
               WorkingDirectory = "PPrint.pff"
-              Icon             = "pprint02Icon.ico"
+              Icon             = "pprint_Icon.exe"
               />
 
     <Shortcut Id               = "PPrint.dsk"
@@ -88,7 +89,7 @@
               Advertise        = "yes"
               Directory        = "DesktopFolder"
               WorkingDirectory = "PPrint.pff"
-              Icon             = "pprint02Icon.ico"
+              Icon             = "pprint_Icon.exe"
               />
   </Component>
 
@@ -100,18 +101,18 @@
 
 <Fragment>
 
-  <Component Id="UninstallPPrint.cmp"  Guid="DEF2D655-F018-497D-82A8-F00B2894CDFF"
-                                                                              Directory="PPrint.pmf">
+  <Component Id="Uninstall_PPrint.cmp" 
+                                  Guid="660C45C4-DC93-4692-941B-7CB8F098F2B6" Directory="PPrint.pmf">
 
     <Shortcut Id               = "UninstallPPrint.shc"
               Name             = "Uninstall PPrint"
               Description      = "Uninstalls PPrint"
               Target           = "[System64Folder]msiexec.exe"
               Arguments        = "/x [ProductCode]"
-              Icon             = "pprint02Icon.ico"
+              Icon             = "pprint_Icon.exe"
               />
     <RemoveFolder Id="PPrint.uni" Directory="PPrint.pmf" On="uninstall"/>
-    <RegistryValue Root="HKCU" Key="Software\UninstallPPrint.cmp" Name="installed"
+    <RegistryValue Root="HKCU" Key="Software\Uninstall_PPrint.cmp" Name="installed"
                    Type="integer" Value="1" KeyPath="yes"/>
   </Component>
 

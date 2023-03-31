@@ -1,27 +1,42 @@
+// CalibrateYdlg dialog
+
+
 #pragma once
 
 
-// CalibrateYdlg dialog
+class CalibrateYdlg : public CDialogEx {
 
-class CalibrateYdlg : public CDialogEx
-{
-	DECLARE_DYNAMIC(CalibrateYdlg)
+  DECLARE_DYNAMIC(CalibrateYdlg)
 
 public:
-	CalibrateYdlg(CWnd* pParent = nullptr);   // standard constructor
-	virtual ~CalibrateYdlg();
+
+Cstring   name;
+Cstring   nLines;
+Cstring   yOffset;
+Cstring   yTweak;
+
+CComboBox nameCtl;
+CEdit     nLinesCtl;
+CEdit     yOffsetCtl;
+CEdit     yTweakCtl;
+
+           CalibrateYdlg(CWnd* pParent = nullptr);   // standard constructor
+  virtual ~CalibrateYdlg();
+
+  virtual BOOL OnInitDialog();
 
 // Dialog Data
 #ifdef AFX_DESIGN_TIME
-	enum { IDD = IDD_CalibrateYdlg };
+  enum { IDD = IDD_CalibrateYdlg };
 #endif
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 
-	DECLARE_MESSAGE_MAP()
+  virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+
+  DECLARE_MESSAGE_MAP()
+
 public:
-	CString nLinesPerPg;
-	CString offset;
-	CString tweak;
-};
+
+  afx_msg void OnCbnSelchangePrinterlist();
+  };

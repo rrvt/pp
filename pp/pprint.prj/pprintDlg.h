@@ -53,7 +53,7 @@ protected:
   // Generated message map functions
   virtual BOOL    OnInitDialog();
 
-          bool    setupPrinter(bool dblSdd);
+//          bool    setupPrinter(bool dblSdd);
 
           void    readDlgData();
           void    readOneDatum(TCchar* key, int& datum, int dflt);
@@ -91,3 +91,8 @@ public:
   afx_msg void    OnAbout();
   afx_msg void    OnExit();
   };
+
+
+
+// bool    selectPrinter();
+

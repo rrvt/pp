@@ -5,7 +5,7 @@
 
 
 
-#include "stdafx.h"
+#include "pch.h"
 #include "blkdpo.h"
 #include "printer.h"
 

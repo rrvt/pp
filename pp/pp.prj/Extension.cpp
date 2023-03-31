@@ -1,7 +1,7 @@
 // Extensions ordinarily printed
 
 
-#include "stdafx.h"
+#include "pch.h"
 #include "Extension.h"
 #include "filename.h"
 #include "IniFile.h"
@@ -23,7 +23,7 @@ Extension::Extension() : nExt(0), ignoreExt(false) { }
 
 void Extension::initialize() {
 TokenString tokStg;
-String tok;
+String      tok;
 
   if (!iniFile.readString(Globals, Extensions, tokStg))
                        {tokStg = defaultExt;   iniFile.writeString(Globals, Extensions, tokStg);}

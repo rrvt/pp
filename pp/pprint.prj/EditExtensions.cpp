@@ -1,7 +1,7 @@
 // EditExtensions.cpp : implementation file
 //
 
-#include "stdafx.h"
+#include "pch.h"
 #include "EditExtensions.h"
 #include "resource.h"
 
@@ -19,7 +19,7 @@ EditExtensions::~EditExtensions() { }
 
 void EditExtensions::DoDataExchange(CDataExchange* pDX) {
   CDialogEx::DoDataExchange(pDX);
-  DDX_Text(pDX, IDC_EDIT1, extensions);
+  DDX_Text(pDX, IDC_Extensions, extensions);
   }
 
 

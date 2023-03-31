@@ -1,7 +1,7 @@
 // Command Line class
 
 
-#include "stdafx.h"
+#include "pch.h"
 #include "CommandLine.h"
 #include "dateTime.h"
 #include "Extension.h"

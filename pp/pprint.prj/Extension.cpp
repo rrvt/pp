@@ -1,7 +1,7 @@
 // Extensions ordinarily printed
 
 
-#include "stdafx.h"
+#include "pch.h"
 #include "Extension.h"
 #include "filename.h"
 #include "IniFile.h"
@@ -18,30 +18,29 @@ static String  defaultExt = _T("c h cpp asm txt bat");
 Extension extension;
 
 
-Extension::Extension() : nExt(0), ignoreExt(false) { }
+Extension::Extension() : ignoreExt(false) { }
 
 
 void Extension::initialize() {
 TokenString tokStg;
-String tok;
+String      tok;
 
   if (!iniFile.readString(Globals, Extensions, tokStg))
                        {tokStg = defaultExt;   iniFile.writeString(Globals, Extensions, tokStg);}
 
-  for (nExt = 0; tokStg.next(tok, _T(" \t")); nExt++) ext[nExt] = tok;
+  while (tokStg.next(tok, _T(" \t"))) data += tok;
   }
 
 
 
 bool Extension::isLegal(TCchar* name) {
-int    i;
-String extension = getExtension(name);
+String  extension = getExtension(name);   if (extension.isEmpty()) return true;
+ExtIter iter(*this);
+String* s;
 
   if (ignoreExt) return true;
 
-  if (extension.isEmpty()) return true;
-
-  for (i = 0; i < nExt; i++) if (extension == ext[i]) return true;
+  for (s = iter(); s; s = iter++) if (extension == *s) return true;
 
   return false;
   }

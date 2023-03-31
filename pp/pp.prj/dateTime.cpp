@@ -2,7 +2,7 @@
 // rrvt 10/9/97
 
 
-#include "stdafx.h"
+#include "pch.h"
 #include "dateTime.h"
 #include "std.h"
 #include <stdio.h>

@@ -1,8 +1,7 @@
-
 // pprintDlg.cpp : implementation file
-//
 
-#include "stdafx.h"
+
+#include "pch.h"
 #include "pprintDlg.h"
 #include "AboutDlg.h"
 #include "CalibrateXdlg.h"
@@ -17,6 +16,8 @@
 #include "Names.h"
 #include "pprint.h"
 #include "printer.h"
+//#include "PrinterPickerDlg.h"
+#include "Printers.h"
 
 
 static TCchar* Globals        = _T("Globals");
@@ -49,8 +50,8 @@ BEGIN_MESSAGE_MAP(PPrintDlg, CDialogEx)
 
   ON_COMMAND(      ID_Help,           &onHelp)
   ON_COMMAND(      ID_Exit,           &OnExit)
-  ON_NOTIFY_EX( TTN_NEEDTEXT, 0,   &OnTtnNeedText)
 
+  ON_NOTIFY_EX( TTN_NEEDTEXT, 0,   &OnTtnNeedText)
   ON_WM_MOVE()
   ON_WM_SIZE()
   ON_WM_SYSCOMMAND()
@@ -282,7 +283,7 @@ uint     ui;
 
   UpdateData(true);
 
-  if (setupPrinter(doubleSided)) {
+  if (printer.setupPrinter(doubleSided)) {
 
     Names line(nameLine);
 
@@ -349,19 +350,6 @@ bool PPrintDlg::printFile(String& path, bool printHeader) {
   printer.pageno = 1;  return true;
   }
 
-
-bool PPrintDlg::setupPrinter(bool dblSdd) {
-CPrintDialogEx printerDlg;
-String         prtName;
-
-  printer.reqDoubleSided = dblSdd;
-
-  printerDlg.DoModal();
-
-  prtName = printerDlg.GetDeviceName();     if (prtName.isEmpty()) return false;
-
-  printer.setPrinterName(prtName); return true;
-  }
 
 
 
@@ -435,44 +423,38 @@ void PPrintDlg::onDispatch() {toolBar.dispatch(ID_PopupMenu, ItemsCaption);}
 void PPrintDlg::OnXTweak() {
 CalibrateXdlg dlg;
 
-  if (setupPrinter(doubleSided)) {
+  if (dlg.DoModal() != IDOK) return;
 
-    printer.readHorizParam(dlg.nCharPerLine, dlg.oddPgOffset, dlg.evenPgOffset, dlg.tweak);
+  if (dlg.name == PrinterTxt) return;
 
-    if (dlg.DoModal() != IDOK) return;
+  printer.saveHorizParams(dlg);
 
-    printer.writeHorizParam(dlg.nCharPerLine, dlg.oddPgOffset, dlg.evenPgOffset, dlg.tweak);
+  if (!printer.open()) {MessageBox(_T("printer could not be opened")); return;}
 
-    if (!printer.open()) {MessageBox(_T("printer could not be opened")); return;}
+  file.initialize(printHeader);
 
-    file.initialize(printHeader);
+  printer.examineX();
 
-    printer.examineX();
-
-    printer.close();
-    }
+  printer.close();
   }
 
 
 void PPrintDlg::OnYTweak() {
 CalibrateYdlg dlg;
 
-  if (setupPrinter(doubleSided)) {
+  if (dlg.DoModal() != IDOK) return;
 
-    printer.readVertParam(dlg.nLinesPerPg, dlg.offset, dlg.tweak);
+  if (dlg.name == PrinterTxt) return;
 
-    if (dlg.DoModal() != IDOK) return;
+  printer.saveVertParams(dlg);
 
-    printer.writeVertParam(dlg.nLinesPerPg, dlg.offset, dlg.tweak);
+  if (!printer.open()) {MessageBox(_T("printer could not be opened")); return;}
 
-    if (!printer.open()) {MessageBox(_T("printer could not be opened")); return;}
+  file.initialize(printHeader);
 
-    file.initialize(printHeader);
+  printer.examineY();
 
-    printer.examineY();
-
-    printer.close();
-    }
+  printer.close();
   }
 
 
@@ -636,5 +618,59 @@ Cstring       s;
 //  pTTT->hinst = 0;
 
 //  ::SendMessage(hWnd, TTM_TRACKACTIVATE, true, (LPARAM)(LPTOOLINFO) pTTT);
+#if 0
+bool PPrintDlg::selectPrinter() {
+#if 1
+PrinterPickerDlg dlg;
 
+  if (dlg.DoModal() == IDOK) {
+    String s = dlg.picked;   printer.setPrinterName(s);
+    }
+#else
+CPrintDialogEx dlg(PD_USEDEVMODECOPIES | PD_NOPAGENUMS | PD_HIDEPRINTTOFILE |
+                                                                        PD_SELECTION | PD_NOCURRENTPAGE);
+String         name;
+
+  if (dlg.DoModal() == S_OK) {
+    switch (dlg.m_pdex.dwResultAction) {
+      case PD_RESULT_APPLY  :
+      case PD_RESULT_PRINT  :
+      case PD_RESULT_CANCEL :
+      default               : return false;
+      }
+  }
+
+  return false;
+
+  name = dlg.GetDeviceName(); printer.setPrinterName(name);
+
+#endif
+  return true;
+  }
+#endif
+
+
+//  if (!selectPrinter()) return;
+
+//  printer.readHorizParam(dlg.charPerLine, dlg.oddPgOffset, dlg.evenPgOffset, dlg.tweak);
+
+//  if (!selectPrinter()) return;
+
+//  printer.readVertParam(dlg.nLines, dlg.yOffset, dlg.yTweak);
+#if 1
+#else
+  String s = dlg.name;   if (s == PrinterTxt) return;
+
+  printer.setPrinterName(s);
+
+  printer.writeVertParam(dlg.nLines, dlg.yOffset, dlg.yTweak);
+#endif
+#if 1
+#else
+  String s = dlg.name;   if (s == PrinterTxt) return;
+
+  printer.setPrinterName(s);
+
+  printer.writeHorizParam(dlg.charPerLine, dlg.oddPgOffset, dlg.evenPgOffset, dlg.tweak);
+#endif
 

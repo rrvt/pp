@@ -124,12 +124,10 @@
     <ClCompile Include="excptn.cpp" />
     <ClCompile Include="Extension.cpp" />
     <ClCompile Include="..\CommonFiles\File.cpp" />
+    <ClCompile Include="pch.cpp" />
     <ClCompile Include="pp.cpp" />
-    <ClCompile Include="..\CommonFiles\printer.cpp" />
-    <ClCompile Include="stdafx.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
-    </ClCompile>
+    <ClCompile Include="..\CommonFiles\PrinterBase.cpp" />
+    <ClCompile Include="Printer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\CommonFiles\blkdpo.h" />
@@ -140,9 +138,11 @@
     <ClInclude Include="excptn.h" />
     <ClInclude Include="Extension.h" />
     <ClInclude Include="..\CommonFiles\File.h" />
-    <ClInclude Include="..\CommonFiles\printer.h" />
-    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="framework.h" />
+    <ClInclude Include="pch.h" />
+    <ClInclude Include="Printer.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="..\CommonFiles\PrinterBase.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="C:\Users\rrvt\AppData\Roaming\pp\pp.ini" />

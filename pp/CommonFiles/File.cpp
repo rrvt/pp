@@ -1,9 +1,9 @@
 // File class
 
 
-#include "stdafx.h"
+#include "pch.h"
 #include "File.h"
-#include "Device.h"
+#include "DevBase.h"
 #include "filename.h"
 #include "printer.h"
 

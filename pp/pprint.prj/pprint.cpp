@@ -1,12 +1,13 @@
 // pprint.cpp : Defines the class behaviors for the application.
 
 
-#include "stdafx.h"
+#include "pch.h"
 #include "pprint.h"
 #include "Extension.h"
 #include "filename.h"
 #include "IniFile.h"
 #include "pprintDlg.h"
+#include "printer.h"
 #include "Resource.h"
 #include "Resources.h"
 
@@ -27,8 +28,14 @@ PPrintDlg dlg(m_pszHelpFilePath);
 
   CWinApp::InitInstance();
 
-  iniFile.setAppDataPath(m_pszHelpFilePath, *this);   dlg.DoModal();   m_pMainWnd = 0;
+  iniFile.setAppDataPath(m_pszHelpFilePath, *this);
 
-  return FALSE;
+  extension.initialize();
+
+  printer.initCurPrntr();
+
+    dlg.DoModal();
+
+  printer.saveCurPrntr();    m_pMainWnd = 0;    return 0;
   }
 

@@ -132,20 +132,23 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Library\Extras\AboutDlg.h" />
-    <ClInclude Include="..\..\Library\Extras\ExtraResource.h" />
     <ClInclude Include="..\CommonFiles\blkdpo.h" />
     <ClInclude Include="CalibrateXdlg.h" />
     <ClInclude Include="CalibrateYdlg.h" />
     <ClInclude Include="EditExtensions.h" />
     <ClInclude Include="Extension.h" />
     <ClInclude Include="..\CommonFiles\File.h" />
+    <ClInclude Include="framework.h" />
     <ClInclude Include="Names.h" />
+    <ClInclude Include="pch.h" />
     <ClInclude Include="pprint.h" />
     <ClInclude Include="pprintDlg.h" />
-    <ClInclude Include="..\CommonFiles\printer.h" />
+    <ClInclude Include="Printer.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="targetver.h" />
-    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="Printers.h" />
+    <ClInclude Include="..\CommonFiles\PrinterBase.h" />
+    <ClInclude Include="..\..\Library\Extras\ResourceExtra.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Library\Extras\AboutDlg.cpp">
@@ -218,6 +221,7 @@
       <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
       </PrecompiledHeaderOutputFile>
     </ClCompile>
+    <ClCompile Include="pch.cpp" />
     <ClCompile Include="pprint.cpp">
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </PrecompiledHeaderFile>
@@ -238,28 +242,9 @@
       <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
       </PrecompiledHeaderOutputFile>
     </ClCompile>
-    <ClCompile Include="..\CommonFiles\printer.cpp">
-      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-      </PrecompiledHeaderFile>
-      <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-      </PrecompiledHeaderOutputFile>
-      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-      </PrecompiledHeaderFile>
-      <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-      </PrecompiledHeaderOutputFile>
-    </ClCompile>
-    <ClCompile Include="stdafx.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-      </PrecompiledHeaderFile>
-      <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-      </PrecompiledHeaderOutputFile>
-      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-      </PrecompiledHeaderFile>
-      <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-      </PrecompiledHeaderOutputFile>
-    </ClCompile>
+    <ClCompile Include="Printer.cpp" />
+    <ClCompile Include="Printers.cpp" />
+    <ClCompile Include="..\CommonFiles\PrinterBase.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="pprint.rc" />
@@ -269,11 +254,11 @@
     <None Include="C:\Users\rrvt\AppData\Roaming\pprint\pprint.ini" />
     <None Include="res\pprint.rc2" />
     <None Include="..\README.md" />
-  <None Include="res\Toolbar10.bmp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\pprint.ico" />
     <Image Include="res\pprint02.ico" />
+    <Image Include="res\Toolbar.bmp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Library\Library.prj\Library.vcxproj">

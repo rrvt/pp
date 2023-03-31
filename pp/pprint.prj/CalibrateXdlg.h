@@ -11,14 +11,22 @@ class CalibrateXdlg : public CDialogEx {
 
 public:
 
-CString nCharPerLine;
-CString oddPgOffset;
-CString evenPgOffset;
-CString tweak;
+Cstring   name;
+Cstring   charPerLine;
+Cstring   oddPgOffset;
+Cstring   evenPgOffset;
+Cstring   tweak;
 
-  CalibrateXdlg(CWnd* pParent = nullptr);   // standard constructor
+CComboBox nameCtl;
+CEdit     charsCtl;
+CEdit     oddCtl;
+CEdit     evenCtl;
+CEdit     tweakCtl;
 
+           CalibrateXdlg(CWnd* pParent = nullptr);   // standard constructor
   virtual ~CalibrateXdlg();
+
+  virtual BOOL OnInitDialog();
 
 #ifdef AFX_DESIGN_TIME
   enum { IDD = IDD_CalibrateXdlg };                     // Dialog Data
@@ -29,4 +37,8 @@ protected:
   virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 
   DECLARE_MESSAGE_MAP()
+
+public:
+
+  afx_msg void onSelectPrinter();
   };

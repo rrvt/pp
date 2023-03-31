@@ -1,7 +1,7 @@
 // Display Interface
 
 
-#include "stdafx.h"
+#include "pch.h"
 #include "Display.h"
 
 
