@@ -2,7 +2,6 @@
 // Microsoft Visual C++ generated include file.
 // Used by pprint.rc
 
-#define IDD_AboutBox                    0x0010
 #define IDM_ABOUTBOX                    0x0010
 #define IDR_MAINFRAME                   100
 #define IDR_MENU1                       101

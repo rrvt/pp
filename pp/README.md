@@ -85,6 +85,10 @@ pick values...
 
 ##Updates
 
+### Update 7/3/23
+
+Library update and fix About Command.
+
 ### Update 3/30/23
 
 Update Library.
