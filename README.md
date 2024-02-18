@@ -85,6 +85,11 @@ pick values...
 
 ##Updates
 
+### Update 2/17/24
+
+Reorganized the Library so that it compiles once into Debug and Release directories under the Library
+directory.
+
 ### Update 1/7/24
 
 Library and other changes.
