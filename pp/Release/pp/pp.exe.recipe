@@ -7,9 +7,5 @@
   </ProjectOutputs>
   <ContentFiles />
   <SatelliteDlls />
-  <NonRecipeFileRefs>
-    <NonRecipeFileRef>
-      <FullPath>D:\Sources\pp\pprint.hlp\pprintHlp.vcxproj</FullPath>
-    </NonRecipeFileRef>
-  </NonRecipeFileRefs>
+  <NonRecipeFileRefs />
 </Project>

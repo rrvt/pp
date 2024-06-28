@@ -69,25 +69,4 @@ CTime After::toTimeT() {CTime t(year, month, day, hour, minute, second, 0); retu
 
 
 
-#if 0
-time_t t;
-long   years = tm.tm_year + 1900;
-long   noLeapYears;
-bool   leapYear;
-long   noDays;
-long   timeZone;    _get_timezone(&timeZone);
-int    dySvgHr;       _get_daylight(&dySvgHr);
-
-  noLeapYears = years / 4 - years / 400 - leapYrsTo70;
-
-  leapYear = (years % 4) == 0 && (years % 400) != 0;
-
-  t = (years - 1970) * 365 * secsPerDay + noLeapYears * secsPerDay - (leapYear ? secsPerDay : 0);
-
-  noDays = daysPerMonth[tm.tm_mon] + tm.tm_mday - 1;    noDays += leapYear && tm.tm_mon > 1 ? 1 : 0;
-
-  t += noDays * secsPerDay + tm.tm_hour * secsPerHr;    t += timeZone - (dySvgHr ? secsPerHr : 0);
-
-  t += tm.tm_min  * secsPerMin + tm.tm_sec;             return t;
-#endif
 

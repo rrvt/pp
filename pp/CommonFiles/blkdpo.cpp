@@ -4,11 +4,9 @@
 // rrvt 3/1/95      */
 
 
-
 #include "pch.h"
 #include "blkdpo.h"
 #include "printer.h"
-
 
 
 Ln* Lines::resetLines() {
@@ -63,7 +61,6 @@ int   i;
 
 
 void Blkdpo::disable_header(void) {reset_blkdpo(true);}
-
 
 
 void Blkdpo::reset_blkdpo(bool hdr) {
@@ -162,8 +159,6 @@ int    offset;
 
   ln = lines.resetLines();  pline = &ln->s;   return true;
   }
-
-
 
 
 struct BlankLn {
@@ -288,24 +283,11 @@ TCchar* p;
   while (printer.printPage(this)) continue;
 
   if (printer.isDoubleSided() && (printer.pageno & 1) == 0) {
-    p = _T("\n\n\n                                     This page is blank.\n");     while (*p) put(*p++);
-    printer.printPage(this);
+    p = _T("\n\n\n                                     This page is blank.\n");
+
+    while (*p) put(*p++);   printer.printPage(this);
     }
   }
 
 
-
-  #if 0
-void Blkdpo::isMagicLine() {
-String& s = lines.cur()->s;
-
-  if (s.find(_T("Blkdpo::terminateLine")) >= 0) {
-    int x = blank;
-    }
-
-  if (ln && ln->s != s) {
-    int y = 1;
-    }
-  }
-#endif
 

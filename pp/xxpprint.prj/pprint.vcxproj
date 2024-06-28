@@ -141,6 +141,7 @@
     <ClInclude Include="Extension.h" />
     <ClInclude Include="..\CommonFiles\File.h" />
     <ClInclude Include="framework.h" />
+    <ClInclude Include="MyToolBar.h" />
     <ClInclude Include="Names.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="pprint.h" />
@@ -223,6 +224,7 @@
       <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
       </PrecompiledHeaderOutputFile>
     </ClCompile>
+    <ClCompile Include="MyToolBar.cpp" />
     <ClCompile Include="pch.cpp" />
     <ClCompile Include="pprint.cpp">
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">

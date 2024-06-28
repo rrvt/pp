@@ -12,15 +12,15 @@
 #include <string.h>
 
 
-jmp_buf excp_jmpb;                  // Jump buffer for must be global
+jmp_buf excp_jmpb;                          // Jump buffer for must be global
 
-static jmp_buf stack[6];                // Allow a few levels
+static jmp_buf stack[6];                    // Allow a few levels
 static int     index = 0;
 static int     exceptionValue;
 
 
 
-static int excpValue = 0;   // Exception value setting before open
+static int excpValue = 0;                   // Exception value setting before open
 
 
 // local functions

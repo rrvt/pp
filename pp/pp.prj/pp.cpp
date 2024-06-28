@@ -124,21 +124,3 @@ bool printFile(String& path, bool prtHdr) {
 
 
 
-#if 0
-/* display name of file on display  */
-
-static int pos = 0;
-
-void display_name(TCchar* pname) {
-int lng = _tcsclen(pname);
-
-  if (pos + lng + 1 >= 80) {_tprintf(_T("\n\r")); pos = 0;}
-
-  if (pos) {_tprintf(_T(" ")); pos++;}
-
-  _tprintf(_T("%s"), pname); pos += lng;
-  }
-
-
-void fin_display_name(void) {if (pos > 0) _tprintf(_T("\n"));}
-#endif

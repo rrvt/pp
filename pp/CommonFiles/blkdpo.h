@@ -12,13 +12,6 @@
 
 static const int MaxLines = 3 * 100;
 
-#if 0
-  MapRecord& operator= (const MapRecord& r) {copy(r, *this); return *this;}
-
-  void copy(const MapRecord& src, MapRecord& dst)
-                            {dst.dirty = src.dirty; dst.delRcd = src.delRcd;} // dst.newRcd = src.newRcd;
-#endif
-
 
 struct Ln {
 String s;

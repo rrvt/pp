@@ -39,7 +39,6 @@ static const CbxItem PopupItems[] = {{_T("Calibrate X"),     ID_X_Tweak},
 BEGIN_MESSAGE_MAP(PPrintDlg, CDialogEx)
   ON_COMMAND(      ID_SelectFolder,   &OnSelectFolder)
   ON_COMMAND(      ID_Print,          &OnFilePrint)
-  ON_COMMAND(      ID_App_About,      &OnAbout)
   ON_BN_CLICKED(   IDC_AfterDt,       &OnBnClickedAfterDt)
   ON_BN_CLICKED(   IDC_AfterTm,       &OnBnClickedAfterDt)
 
@@ -49,8 +48,11 @@ BEGIN_MESSAGE_MAP(PPrintDlg, CDialogEx)
   ON_COMMAND(      ID_EditExtensions, &OnEditextensions)
 
   ON_COMMAND(      ID_Help,           &onHelp)
+  ON_COMMAND(      ID_App_About,      &OnAbout)
   ON_COMMAND(      ID_Exit,           &OnExit)
 
+  ON_WM_CREATE()
+  ON_REGISTERED_MESSAGE(AFX_WM_RESETTOOLBAR, &OnResetToolBar)
   ON_NOTIFY_EX( TTN_NEEDTEXT, 0,   &OnTtnNeedText)
   ON_WM_MOVE()
   ON_WM_SIZE()
@@ -58,7 +60,6 @@ BEGIN_MESSAGE_MAP(PPrintDlg, CDialogEx)
   ON_WM_PAINT()
   ON_WM_QUERYDRAGICON()
 
-  ON_REGISTERED_MESSAGE(AFX_WM_RESETTOOLBAR, &OnResetToolBar)
 END_MESSAGE_MAP()
 
 
@@ -72,9 +73,37 @@ PPrintDlg::PPrintDlg(TCchar* helpPth, CWnd* pParent) : helpPath(helpPth), CDialo
   nameLine(_T("")) { }
 
 
+PPrintDlg::~PPrintDlg() {winPos.~WinPos();}
+
+
+int PPrintDlg::OnCreate(LPCREATESTRUCT lpCreateStruct) {
+
+  if (CDialogEx::OnCreate(lpCreateStruct) == -1) return -1;
+
+  return 0;
+  }
+
+
+
 BOOL PPrintDlg::OnInitDialog() {
 CRect winRect;
-                                                        // Initialize data in variables before dialog init
+
+  initData();                                     // Initialize data before OnInit, controls after Init
+
+  CDialogEx::OnInitDialog();
+
+  if (!toolBar.create(this, IDR_ToolBar)) EndDialog(IDCANCEL);
+
+  GetWindowRect(&winRect);   winPos.setDLUToPxls(winRect, DlgWidth, DlgDepth);
+
+  winPos.initialPos(this, winRect);   toolBar.move(winRect);
+
+  isInitialized = true;   return TRUE;
+  }
+
+
+void PPrintDlg::initData() {
+                                                         // Initialize data in variables before dialog init
   readDlgData();
 
   COleDateTime dt = COleDateTime::GetCurrentTime();
@@ -86,8 +115,6 @@ CRect winRect;
   dt.SetDateTime(yr, mn, dy, 0, 0, 0);
   afterDate = dt;
   afterTime = dt;
-
-  CDialogEx::OnInitDialog();                      // Initialize data before OnInit, controls after Init
                                                   // system menu (upper left hand corner & toolbar
   addAboutToSysMenu(IDM_ABOUTBOX, IDS_ABOUTBOX);  // Add "About..." menu item to system menu.
 
@@ -97,18 +124,12 @@ CRect winRect;
   SetIcon(m_hIcon, TRUE);                               // Set big icon
   SetIcon(m_hIcon, FALSE);                              // Set small icon
 
-  if (!toolBar.create(this, IDR_ToolBar)) EndDialog(IDCANCEL);
-
   // Initialize controls directly
 
   iniFile.readString(Globals, FolderPath, path);   pathCtrl.SetWindowText(path);
 
   afterDateCtrl.SetFormat(_T("MM/dd/yy"));
   afterTimeCtrl.SetFormat(_T("HHmm"));
-
-  GetWindowRect(&winRect);   toolBar.move(winRect);   SetBackgroundColor(RGB(255,255,255));
-
-  winPos.initialPos(this, winRect);   isInitialized = true;   return TRUE;
   }
 
 
@@ -119,13 +140,13 @@ void PPrintDlg::OnMove(int x, int y)
 
 
 void PPrintDlg::OnSize(UINT nType, int cx, int cy) {
-CRect winRect;
+CRect r;
 
-  CDialogEx::OnSize(nType, cx, cy);
+  GetWindowRect(&r);
 
-  if (!isInitialized) return;
+  if (!isInitialized) {winPos.setInvBdrs(r, cx, cy);   return;}
 
-  GetWindowRect(&winRect);   winPos.set(winRect);   toolBar.move(winRect);
+  winPos.set(cx, cy);   toolBar.move(r);   CDialogEx::OnSize(nType, cx, cy);
   }
 
 
@@ -133,12 +154,16 @@ LRESULT PPrintDlg::OnResetToolBar(WPARAM wParam, LPARAM lParam) {setupToolBar();
 
 
 void PPrintDlg::setupToolBar() {
-CRect winRect;   GetWindowRect(&winRect);   toolBar.initialize(winRect);
+CRect winRect;   GetWindowRect(&winRect);   toolBar.set(winRect);
 
+#if 1
+  toolBar.addMenu(ID_PopupMenu, PopupItems, noElements(PopupItems), ItemsCaption);
+#else
   if (toolBar.installPopupMenu(ID_PopupMenu)) {
     toolBar.addPopupItems(ID_PopupMenu, PopupItems, noElements(PopupItems));
     toolBar.setPopupCaption(ID_PopupMenu, ItemsCaption);
     }
+#endif
   }
 
 
@@ -417,7 +442,7 @@ bool PPrintDlg::getDateTime(CTime& tm) {
 void PPrintDlg::OnExit() {EndDialog(0);}
 
 
-void PPrintDlg::onDispatch() {toolBar.dispatch(ID_PopupMenu, ItemsCaption);}
+void PPrintDlg::onDispatch() {toolBar.dispatch(ID_PopupMenu);}
 
 
 void PPrintDlg::OnXTweak() {
@@ -672,5 +697,36 @@ String         name;
   printer.setPrinterName(s);
 
   printer.writeHorizParam(dlg.charPerLine, dlg.oddPgOffset, dlg.evenPgOffset, dlg.tweak);
+#endif
+
+
+
+#if 0
+  readDlgData();
+
+  COleDateTime dt = COleDateTime::GetCurrentTime();
+  int yr = dt.GetYear();
+  int mn = dt.GetMonth();
+  int dy = dt.GetDay() - 7;
+  if (dy <= 0) {dy += 30; mn--;  if (mn < 1) {mn = 12; yr--;}}
+
+  dt.SetDateTime(yr, mn, dy, 0, 0, 0);
+  afterDate = dt;
+  afterTime = dt;
+                                                  // system menu (upper left hand corner & toolbar
+  addAboutToSysMenu(IDM_ABOUTBOX, IDS_ABOUTBOX);  // Add "About..." menu item to system menu.
+
+  // Set the icon for this dialog.  The framework does this automatically
+  //  when the application's main window is not a dialog
+
+  SetIcon(m_hIcon, TRUE);                               // Set big icon
+  SetIcon(m_hIcon, FALSE);                              // Set small icon
+
+  // Initialize controls directly
+
+  iniFile.readString(Globals, FolderPath, path);   pathCtrl.SetWindowText(path);
+
+  afterDateCtrl.SetFormat(_T("MM/dd/yy"));
+  afterTimeCtrl.SetFormat(_T("HHmm"));
 #endif
 

@@ -6,10 +6,6 @@
 #include "fileIO.h"
 
 
-
-
-
-
 class File {
 bool      initialized;
 Blkdpo    blkdpo;

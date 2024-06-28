@@ -51,6 +51,9 @@
 #define ID_Exit                         408
 #define ID_EditExtensions               409
 
+#define DlgWidth                        320
+#define DlgDepth                        172
+
 
 // Next default values for new objects
 //

@@ -3,7 +3,7 @@
 //
 
 #pragma once
-#include "ToolBar.h"
+#include "MyToolBar.h"
 #include "WinPos.h"
 
 
@@ -12,11 +12,11 @@ class PPrintDlg : public CDialogEx {
 
 String        helpPath;
 
-HICON         m_hIcon;
-ToolBar       toolBar;
+MyToolBar     toolBar;
 
 bool          isInitialized;
-WinPos        winPos;                                // Position of dialog box
+
+HICON         m_hIcon;
 
 CStatic       pathCtrl;
 CButton       afterDtCtrl;
@@ -38,37 +38,47 @@ CString       nameLine;
 
 public:
 
+           PPrintDlg(TCchar* helpPth, CWnd* pParent = nullptr);                 // standard constructor
+  virtual ~PPrintDlg();
+
+  virtual BOOL OnInitDialog();
+
 #ifdef AFX_DESIGN_TIME
   enum {IDD = IDD_pprint};                     // Dialog Data
 #endif
 
-  PPrintDlg(TCchar* helpPth, CWnd* pParent = nullptr);                 // standard constructor
-
 protected:
-
-  DECLARE_MESSAGE_MAP()
 
   virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 
+  DECLARE_MESSAGE_MAP()
+
   // Generated message map functions
-  virtual BOOL    OnInitDialog();
 
-//          bool    setupPrinter(bool dblSdd);
+          void readDlgData();
+          void readOneDatum(TCchar* key, int& datum, int dflt);
+          void writeDlgData();
+          void writeOneDatum(TCchar* key, int& datum);
 
-          void    readDlgData();
-          void    readOneDatum(TCchar* key, int& datum, int dflt);
-          void    writeDlgData();
-          void    writeOneDatum(TCchar* key, int& datum);
-
-          bool    getDateTime(CTime& tm);
+          bool getDateTime(CTime& tm);
 
 private:
 
-  void setupToolBar();
-  bool printFile(String& path, bool printHeader);
-  bool addAboutToSysMenu(uint idm, uint ids);
+          void initData();
+          void setupToolBar();
+          bool printFile(String& path, bool printHeader);
+          bool addAboutToSysMenu(uint idm, uint ids);
 
 public:
+
+  afx_msg int     OnCreate(LPCREATESTRUCT lpCreateStruct);
+  afx_msg LRESULT OnResetToolBar(WPARAM wParam, LPARAM lParam);
+  afx_msg void    OnAbout();
+  afx_msg void    onHelp();
+
+  afx_msg void    OnMove(int x, int y);
+  afx_msg void    OnSize(UINT nType, int cx, int cy);
+  afx_msg BOOL    OnTtnNeedText(UINT id, NMHDR* pNMHDR, LRESULT* pResult);
 
   afx_msg void    OnSelectFolder();
   afx_msg void    OnFilePrint();
@@ -77,22 +87,13 @@ public:
   afx_msg void    OnXTweak();
   afx_msg void    OnYTweak();
   afx_msg void    OnEditextensions();
-  afx_msg BOOL    OnTtnNeedText(UINT id, NMHDR* pNMHDR, LRESULT* pResult);
   afx_msg UINT    OnNotifyFormat(CWnd *pWnd, UINT nCommand);
-  afx_msg LRESULT OnResetToolBar(WPARAM wParam, LPARAM lParam);
 
-  afx_msg void    OnMove(int x, int y);
-  afx_msg void    OnSize(UINT nType, int cx, int cy);
   afx_msg void    OnSysCommand(UINT nID, LPARAM lParam);
   afx_msg void    OnPaint();
   afx_msg HCURSOR OnQueryDragIcon();
 
-  afx_msg void    onHelp();
-  afx_msg void    OnAbout();
   afx_msg void    OnExit();
   };
 
-
-
-// bool    selectPrinter();
 

@@ -78,7 +78,8 @@ void PrinterBase::initialize(TCchar* nam) {
 
 // Save Current printer
 
-void PrinterBase::saveCurPrntr() {if (!name.isEmpty()) iniFile.write(_T("Globals"), CurPrntr, name);}
+void PrinterBase::saveCurPrntr()
+                              {if (!name.isEmpty()) iniFile.write(_T("Globals"), CurPrntr, name);}
 
 
 
@@ -114,13 +115,12 @@ int      localNumberOfCopies = 0;
                        PD_NOSELECTION;          // Don't allow selecting individual document pages.
 
 
-  if (!PrintDlg(&printDlgInfo)) return false; // Display the printer dialog and retrieve the printer DC.
-                                              // The user clicked OK so the printer dialog box data
-                                              // structure was returned with the user's selections.
-                                              // Copy the relevant data from the data structure and
-                                              // save them to a local data structure.
-
-
+  if (!PrintDlg(&printDlgInfo)) return false; // Display the printer dialog and retrieve the
+                                              // printer DC.  The user clicked OK so the printer
+                                              // dialog box data structure was returned with the
+                                              // user's selections.  Copy the relevant data from
+                                              // the data structure and save them to a local data
+                                              // structure.
 
   printerDC = printDlgInfo.hDC;             // Get the HDC of the selected printer
 
@@ -132,25 +132,26 @@ int      localNumberOfCopies = 0;
   //  Lock the handle to get a pointer to the DEVMODE structure.
   returnedDevmode = (PDEVMODE) GlobalLock(printDlgInfo.hDevMode);
 
-  localDevmode = (LPDEVMODE) HeapAlloc(GetProcessHeap(), HEAP_ZERO_MEMORY | HEAP_GENERATE_EXCEPTIONS,
-                                                                              returnedDevmode->dmSize);
+  localDevmode = (LPDEVMODE) HeapAlloc(GetProcessHeap(),
+                            HEAP_ZERO_MEMORY | HEAP_GENERATE_EXCEPTIONS, returnedDevmode->dmSize);
   if (localDevmode) {
 
     memcpy((LPVOID) localDevmode, (LPVOID) returnedDevmode, returnedDevmode->dmSize);
 
-    localPrinterName = localDevmode->dmDeviceName;  // Save the printer name from the DEVMODE structure.
-                                                    // This is done here just to illustrate how to
-                                                    // access the name field. The printer name can also
-                                                    // be accessed  by referring to the dmDeviceName in
-                                                    // the local copy of the DEVMODE structure.
+    localPrinterName = localDevmode->dmDeviceName;  // Save the printer name from the DEVMODE
+                                                    // structure.  This is done here just to
+                                                    // illustrate how to access the name field.
+                                                    // The printer name can also be accessed  by
+                                                    // referring to the dmDeviceName in the local
+                                                    // copy of the DEVMODE structure.
 
-    localNumberOfCopies = printDlgInfo.nCopies;     // Save the number of copies as entered by the user
-    }
+    localNumberOfCopies = printDlgInfo.nCopies;     // Save the number of copies as entered by the
+    }                                               // user
+
   else {
-    return false;
-    // Unable to allocate a new structure so leave
-    //  the pointer as NULL to indicate that it's empty.
-    }
+    return false;                                   // Unable to allocate a new structure so leave
+    }                                               // the pointer as NULL to indicate that it's
+                                                    // empty.
 
   // Free the DEVMODE structure returned by the print dialog box.
   if (printDlgInfo.hDevMode) GlobalFree(printDlgInfo.hDevMode);
@@ -189,9 +190,9 @@ HANDLE          prtHndl;
     devMode = pInfo->pDevMode;
 
     if (devMode) {
-      doubleSided   = (devMode->dmDuplex != DMDUP_SIMPLEX) & reqDoubleSided;    // Actually do it?
+      doubleSided   = (devMode->dmDuplex != DMDUP_SIMPLEX) & reqDoubleSided; // Actually do it?
       }
-    else doubleSided = reqDoubleSided;                                           // Default to request
+    else doubleSided = reqDoubleSided;                                       // Default to request
 
     ClosePrinter(prtHndl);
     }
@@ -275,7 +276,7 @@ int stk   = doubleSided;   doubleSided = true;
 
 
 void PrinterBase::printGrp(int width)
-                          {int i;   print10(xTweak);   for (i = 0; i < 9; i++) print10(xTweak + i - 4);}
+                     {int i;   print10(xTweak);   for (i = 0; i < 9; i++) print10(xTweak + i - 4);}
 
 
 void PrinterBase::print10(int tweak) {
@@ -371,9 +372,6 @@ int rslt;
   }
 
 
-//bool PrinterBase::startPrinter() {return StartDoc(hdcPrn, &info) > 0;}
-
-
 void PrinterBase::createPort(void) {
 SIZE  orgSize;
 SIZE  portSize;
@@ -391,60 +389,11 @@ POINT orgPt;
 
 
 void PrinterBase::printLine(TCchar* line)
-                                 {TextOut(hdcPrn, xOffset, yPos, line, lstrlen(line));   yPos += height;}
+                           {TextOut(hdcPrn, xOffset, yPos, line, lstrlen(line));   yPos += height;}
 
 
 void PrinterBase::closePort(void) {RestoreDC(hdcPrn, -1);   EndPage(hdcPrn);   yPos = 0;}
 
 
 
-
-#if 0
-void PrinterBase::getPrinterParms() {
-TCchar* dev = name;
-TCchar* q   = _tcsrchr(name.str(), _T('\\'));   if (q) dev = q + 1;
-
-    iniFile.writeInt(dev,    CharsPerLine,  80);
-    iniFile.writeInt(dev,    XOffsetOddPg,   0);
-    iniFile.writeInt(dev,    XOffsetEvenPg,  0);
-    iniFile.writeInt(dev,    XTweak,         0);
-
-    iniFile.writeInt(dev,    LinesPerPage,  63);
-    iniFile.writeInt(dev,    YOffset,        0);
-    iniFile.writeInt(dev,    YTweak,         0);
-
-
-  charsPerLine =  iniFile.readInt(dev, CharsPerLine, 80);
-  xOffsetOdd   =  iniFile.readInt(dev, XOffsetOddPg,  0);
-  xOffsetEven  =  iniFile.readInt(dev, XOffsetEvenPg, 0);
-  xTweak       =  iniFile.readInt(dev, XTweak,        0);
-
-  linesPerPage =  iniFile.readInt(dev, LinesPerPage, 63);
-  yOffset      =  iniFile.readInt(dev, YOffset,       0);
-  yTweak       =  iniFile.readInt(dev, YTweak,        0);
-  }
-#endif
-
-
-#if 1
- //   prevFont = insertFont(width - tw);
-#else
-    //HFONT   hFont;
-    //HFONT   prevFont;
-    logFont.lfWidth = width - tw;
-
-    hFont = CreateFontIndirect(&logFont);
-
-    if (hFont) prevFont = SelectObject(hdcPrn, hFont);
-#endif
-//    DeleteObject(SelectObject(hdcPrn, prevFont));    //GetStockObject(SYSTEM_FONT)
-
-//  width  = xPage / charsPerLine;     if (width * charsPerLine  >= xPage) width--;
-#if 1
-#else
-    //HGDIOBJ hFont;
-    hFont = CreateFontIndirect(&logFont);
-
-    if (hFont) prevFont = SelectObject(hdcPrn, hFont);
-#endif
 

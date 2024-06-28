@@ -149,6 +149,7 @@
     <ClInclude Include="..\CommonFiles\PrinterBase.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\README.md" />
     <None Include="C:\Users\rrvt\AppData\Roaming\pp\pp.ini" />
     <None Include="ReadMe.txt" />
   </ItemGroup>
