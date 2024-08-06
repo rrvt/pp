@@ -83,6 +83,10 @@ help file in pprint should help pick values...
 
 ##Updates
 
+### Update 8/5/24
+
+Library Update.
+
 ### Update 6/28/24
 
 Moved the windows version to a separate directory.  Added MIT License to installation.
