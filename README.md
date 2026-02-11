@@ -7,49 +7,32 @@ to fit on a page, then pick a single blank line to break the page, and so on...
 
 ## Getting Started
 
-This version was created with Visual Studion 2017.  It was compiled with the following properties:
+The application is built with Visual Studio 2022 (VS22).  It was compiled with the following
+properties:
 
-  - Windows SDK Version: 10.0.18362.0
-  - Platform Toolset: visual Studio 2017 (v141)
-  - MFC: Use MFC in a Shared DLL
-  - Character Set:  Use Unicode Character Set
-  - Precompiled Header:  Not Using Precompiled Headers
-  - Linker/Additional Dependencies:  Htmlhelp.lib.
+  o Windows Latest SDK Version
+  o Platfor Toolset: visual Studio 2022
+  o MFC: Use MFC in a Shared DLL
+  o Character Set:  Use Unicode Character Set
+  o Additional Include Directories:
+    * $(ProjectDir)
+    * $(SolutionDir)..\..\Library\Library.prj\
+    * $(SolutionDir)..\..\Library\DocView\
+  o  Precompiled Header:  Not Using Precompiled Headers
+  o  Linker/Additional Dependencies:  Htmlhelp.lib
 
-The HTML Help Workshop (HHW), Version 4.74.8702.0 was used to prepare the help file (WixApp.chm).
-It is copied into the Release directory.  I used Dreamweaver (DW) to do most of the content
-production of the help files that the HTML Help Workshop produces (i.e. HHW is used to produce the
-pages/files needed and DW is used to fill in the content).
+The HTML Help Workshop (HHW), Version 4.74.8702.0 was used to prepare the help file (WixApp.chm).  It is
+copied into the Release directory.  I used Dreamweaver (DW) to do most of the content production of the
+help files that the HTML Help Workshop produces (i.e. HHW is used to produce the pages/files needed
+and DW is used to fill in the content).
 
-Additionally the WIX Installer, The very old Help Workshop and SlickEdit were used to process the
-code.  The Product (Wix installation file) was produced by my WixApp but it can be manipulated by
-hand for changes.
+The Installer requires the Wix, HeatWave and NuGet-Tools Extensions to VS22.  WixApp (one of my
+applications, see git) was used to produce the product.wxs file.
 
 ### Prerequisites
 
-The following tools must be available to build these applications:
-
-  - Visual Studio 2017 (VS17) or later.
-  - The WiX Toolset must be installed in Visual Studio.
-  - The "HTML Help Workshop" (google it) must be installed.
-
-Optional Tools:
-
-  - WixApp -- Application to produce a Wix Product.wxs file (see GitHub)
-
-### Build Procedure
-
-Build in SlickEdit or VS17:
-
-  - Find the Solution file: .../Sources/pp/pp/pp.sln.
-  - Open the Solution File in VS17 or SlickEdit
-  - Optional -- Execute command Build/Clean Solution
-  - Execute command Build/Build Solution
-
-If all the prequisites are available then it should compile and link all products into the current
-configuration directory (e.g. .../Sources/pp/Debug/, or .../Sources/pp/Release/).  All the build
-products are contained in the configuration directory or subdirectories of the the configuration
-directory.
+The WiX, HeatWave, NuGet-Tools Toolsets must be installed in Visual Studio.
+The "HTML Help Workshop" (google it) must be installed.  Visual Studio 2022 or later.
 
 ### Installing
 
@@ -82,6 +65,14 @@ density is unique to each printer the values chosen do not represent inches or e
 help file in pprint should help pick values...
 
 ##Updates
+
+### Update 2/10/26
+
+Added ability to build in 64 bit mode.  Upgraded Wix to HeatWave version 4.
+
+### Update 10/21/25
+
+Factored library into three parts, Library, Dialog, DocView.
 
 ### Update 8/5/24
 

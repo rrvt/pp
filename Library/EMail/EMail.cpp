@@ -10,8 +10,6 @@
 #include "PlainTxt.h"
 
 
-
-
 /* curl will not send the QUIT command until you call cleanup, so you should be able to reuse this
  * connection for additional messages (setting CURLOPT_MAIL_FROM and CURLOPT_MAIL_RCPT as required,
  * and calling curl_easy_perform() again. It may not be a good idea to keep the connection open for
@@ -90,7 +88,7 @@ EMail*  eMail = (EMail*) classPtr;
 String& text  = eMail->text;
 int&    textX = eMail->textX;
 int     lng   = text.length() - textX;
-int     max   = size * nmemb;   if (lng < max) max = lng;
+int     max   = (int) (size * nmemb);   if (lng < max) max = lng;
 
   if (max <= 0) return 0;
 
@@ -229,7 +227,6 @@ TCchar* tc;
 
   if (eol) text += TCrlf;
   }
-
 
 
 

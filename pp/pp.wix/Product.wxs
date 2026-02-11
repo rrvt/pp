@@ -1,78 +1,71 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+<Wix
+  xmlns="http://wixtoolset.org/schemas/v4/wxs"
+  xmlns:ui="http://wixtoolset.org/schemas/v4/wxs/ui"
+  >
 
-<Product Id="*" UpgradeCode="82C2C0C4-7437-4270-B941-F7C116DD8C6F" Language="1033"
-                Manufacturer="Bob -- K6RWY" Name="pp"
-                Version="1.17.8"
-                >
+<Package UpgradeCode="82C2C0C4-7437-4270-B941-F7C116DD8C6F" Language="1033"
+  Manufacturer="Bob -- K6RWY" Name="pp"
+  Version="1.17.10" InstallerVersion="500"
+  >
 
-  <Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine"
-                Manufacturer="Bob -- K6RWY" Description="Installs pp"
-                Comments="Copyright (c) Bob -- K6RWY"
-                />
+  <SummaryInformation Manufacturer="Bob -- K6RWY" Description="Installs pp"
+    Comments="Copyright (c) Bob -- K6RWY"
+    />
 
   <MajorUpgrade Schedule="afterInstallInitialize"
-                AllowDowngrades="no"   IgnoreRemoveFailure="no"   AllowSameVersionUpgrades="no"
-                DowngradeErrorMessage="A newer version of [ProductName] is already installed."
-                />
+    AllowDowngrades="no" IgnoreRemoveFailure="no" AllowSameVersionUpgrades="no"
+    DowngradeErrorMessage="A newer version of [ProductName] is already installed."
+    />
 
   <MediaTemplate EmbedCab="yes" />
 
   <WixVariable Id="WixUILicenseRtf"
                               Value="$(var.SolutionDir)..\..\Library\License\MITLicenseFile.rtf" />
-  <UI Id="My_InstallDir.ui"><UIRef Id="WixUI_InstallDir" /></UI>
 
-  <WixVariable Id="WixUIDialogBmp" Value="C:\Program Files (x86)\WixApp\dialog.bmp"/>
-  <WixVariable Id="WixUIBannerBmp" Value="C:\Program Files (x86)\WixApp\banner.bmp"/>
+  <Property Id="WIXUI_INSTALLDIR" Value="PRINT_PROGRAM_PP.PFF" />
 
-  <Icon     Id="ppIcon.ico" SourceFile="$(var.SolutionDir)Resource\pp.ico"/>
-  <Property Id="ARPPRODUCTICON"  Value="ppIcon.ico" />
+  <UI Id="My_InstallDir.ui">
+    <ui:WixUI Id="WixUI_InstallDir" />
+    <UIRef Id="WixUI_ErrorProgressText" />
+  </UI>
+
+  <WixVariable Id="WixUIDialogBmp" Value="C:\Program Files (x86)\WixApp\dialog.bmp" />
+  <WixVariable Id="WixUIBannerBmp" Value="C:\Program Files (x86)\WixApp\banner.bmp" />
 
 
-  <!-- Custom Action to set the system (Machine) Path Variable -->
-
-  <Binary Id="SetEnvExe" SourceFile="C:\Program Files (x86)\SetEnv\SetEnv.exe" />
-  <CustomAction Id="pp.pth" BinaryKey="SetEnvExe" Impersonate="no"
-              Execute="deferred" ExeCommand='-a Path " [PRINT_PROGRAM_PP.PFF] "'   Return="check"/>
-  <CustomAction Id="pp.rmp" BinaryKey="SetEnvExe" Impersonate="no"
-              Execute="deferred" ExeCommand='-d Path " [PRINT_PROGRAM_PP.PFF] "'   Return="check"/>
-
-  <InstallExecuteSequence>
-    <Custom Action="pp.pth" Before="InstallFinalize">
-      (UPGRADINGPRODUCTCODE) OR NOT (REMOVE="ALL")
-    </Custom>
-    <Custom Action="pp.rmp" Before="pp.pth">
-      (NOT UPGRADINGPRODUCTCODE) AND (REMOVE="ALL")
-      </Custom>  </InstallExecuteSequence>
-
-  <Feature Id="ProductFeatures" Title="Main Product" Level="1" >
-    <ComponentGroupRef Id="pp.ftr"/>
+  <Feature Id="ProductFeatures" Title="Main Product" Level="1">
+    <ComponentGroupRef Id="pp.ftr" />
   </Feature>
-</Product>
+</Package>
 
 <Fragment>
   <ComponentGroup Id="pp.ftr">
-    <ComponentRef Id="pp.cmp"/>
+    <ComponentRef Id="pp.cmp" />
   </ComponentGroup>
 </Fragment>
 
 <!--Directory structure-->
 <Fragment>
-  <Directory Id="TARGETDIR" Name="SourceDir">
-    <Directory Id="ProgramFilesFolder">
-      <Directory Id="PRINT_PROGRAM_PP.PFF" Name="Print Program (pp)" />
-    </Directory>
-  </Directory>
-
   <Property Id="ApplicationFolderName" Value="Print Program (pp)" />
-  <Property Id="WIXUI_INSTALLDIR"      Value="PRINT_PROGRAM_PP.PFF"/>
   <Property Id="WixAppFolder"          Value="WixPerMachineFolder" />
+
+  <StandardDirectory Id="ProgramFiles6432Folder">
+    <Directory Id="PRINT_PROGRAM_PP.PFF" Name="Print Program (pp)" />
+  </StandardDirectory>
 </Fragment>
 
 <Fragment>
   <Component Id="pp.cmp" Guid="C57F4F46-3B3E-408F-9A66-BBB1C0256F49"
                                                                   Directory="PRINT_PROGRAM_PP.PFF">
-    <File Id="pp.cmp" Source="$(var.SolutionDir)..\Release\pp.exe" KeyPath="yes"/>
+    <File Id="pp.cmp" Source="$(var.pp.TargetDir)\..\Release.Win32\pp.exe" KeyPath="yes" />
+    <Environment Id="PATH"
+                 Name="PATH"
+                 Value="[PRINT_PROGRAM_PP.PFF]"
+                 Permanent="no"
+                 Part="last"
+                 Action="set"
+                 System="yes"
+                 />
   </Component>
 </Fragment>
 </Wix>

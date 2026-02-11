@@ -10,10 +10,26 @@
 #include <iomanip>
 #include <sstream>
 #include <memory>
-
+#include <random>
 
 
 Cstring::Cstring(String& s) : CString(s.str()) {}
+
+
+void Cstring::clear() {try {Empty();   FreeExtra();} catch (...) { }}
+
+
+// Expunge data, then clear string
+
+void Cstring::expunge() {
+static random_device       rd;
+mt19937                    gen(rd());
+uniform_int_distribution<> distribute(32, 127);
+int                        n = length();
+int                        i;
+
+  for (i = 0; i < n; i++) Insert(i, (TCchar) distribute(gen));   clear();
+  }
 
 
 int Cstring::stoi( uint& i, int base) {
@@ -42,6 +58,17 @@ Cstring& Cstring::operator= (ulong  v)
                                 {String s = v;  CString& cs = *this;  cs = s.str();  return *this;}
 Cstring& Cstring::operator= (double v)
                                 {String s = v;  CString& cs = *this;  cs = s.str();  return *this;}
+
+
+void String::expunge() {
+static random_device       rd;
+mt19937                    gen(rd());
+uniform_int_distribution<> distribute(32, 127);
+int                        n = length();
+int                        i;
+
+  for (i = 0; i < n; i++) (*this)[i] = (TCchar) distribute(gen);   clear();
+  }
 
 
 String& String::trim() {trimLeft(); return trimRight();}
@@ -140,7 +167,7 @@ size_t j = i;
     #ifdef Win2K
       Tchar* endPtr;   v = _tcstol(this->c_str(), &endPtr, base);   i = endPtr-this->c_str();
     #else
-      v = ::stoi(*this, &j, base);   i = j;
+      v = ::stoi(*this, &j, base);   i = (uint) j;
     #endif
     }
   catch(...) {v = 0; i = -1;} return v;
@@ -154,7 +181,7 @@ size_t j = i;
     #ifdef Win2K
       Tchar* endPtr;   v = strtoul(this->c_str(), &endPtr, base);   i = endPtr-this->c_str();
     #else
-      v = ::stoul(*this, &j, base);   i = j;
+      v = ::stoul(*this, &j, base);   i = (uint) j;
     #endif
     }
   catch(...) {v = 0; i = -1;} return v;
@@ -168,7 +195,7 @@ size_t j = i;
     #ifdef Win2K
       Tchar* endPtr;   v = strtod(this->c_str(), &endPtr);   i = endPtr-this->c_str();
     #else
-      v = ::stod(*this, &j);    i = j;
+      v = ::stod(*this, &j);    i = (uint) j;
     #endif
     }
   catch(...) {v = 0; i = -1;}
@@ -178,16 +205,59 @@ size_t j = i;
 
 
 
-String dblToString(double v, int width, int precision) {
-String s;
+// Returns pos of one of the characters in tc, priority left to right otherwise returns -1
 
-  if (precision) {s.format(_T("%*.*f"), width, precision, v);   return s;}
-                  s.format(_T("%*f"),   width,            v);   return s;
+int String::findOneOf(TCchar* tc, int offset) {
+int i;
+int pos;
+
+  for (i = 0; tc[i]; i++) {pos = find(tc[i], offset);   if (pos >= 0) return pos;}
+
+  return -1;
   }
 
 
-String intToString(  long v, int width) {String s;   s.format(_T("%*li"), width, v); return s;}
-String uintToString(ulong v, int width) {String s;   s.format(_T("%*lu"), width, v); return s;}
+
+//%[flags][width][.precision][size]type
+
+String dblToString(double v, int width, int precision) {
+String s;
+
+  if      (precision && width) {s.format(_T("%*.*lg"), width, precision, v);   return s;}
+  else if (precision)          {s.format(_T("%.*lg"),         precision, v);   return s;}
+  else if (             width) {s.format(_T("%*lg"),   width,            v);   return s;}
+                                s.format(_T("%lg"),                      v);   return s;
+  }
+
+
+String intToString(  long v, int width, int precision) {
+String s;
+
+  if      (precision && width) {s.format(_T("%*.*li"), width, precision, v);   return s;}
+  else if (precision)          {s.format(_T("%.*li"),         precision, v);   return s;}
+  else if (             width) {s.format(_T("%*li"),   width,            v);   return s;}
+                                s.format(_T("%li"),                      v);   return s;
+  }
+
+
+
+
+String uintToString(ulong v, int width, int precision) {
+String s;
+
+  if      (precision && width) {s.format(_T("%*.*lu"), width, precision, v); return s;}
+  else if (precision)          {s.format(_T("%.*lu"),         precision, v); return s;}
+  else if (             width) {s.format(_T("%*lu"),   width,            v); return s;}
+                                s.format(_T("%lu"),                      v); return s;
+  }
+
+
+String hexToString(ulong  v, int precision) {
+String s;
+
+  if (precision)          {s.format(_T("0x%.*lx"),         precision, v); return s;}
+                           s.format(_T("0x%lx"),                      v); return s;
+  }
 
 
 
@@ -206,7 +276,7 @@ int ePos;
 void ToAnsi::convert(TCchar* tp) {
 NewArray(char);
 
-  cnt = tp ? _tcslen(tp) : 0;    p = AllocArray(cnt+1);
+  cnt = tp ? (int) _tcslen(tp) : 0;    p = AllocArray(cnt+1);
 
   if (!tp) {*p = 0; return;}
 
@@ -227,7 +297,7 @@ ToAnsi::~ToAnsi() {if (p) {NewArray(char); FreeArray(p);}}
 
 void ToUniCode::convert(Cchar* tp) {
 
-  cnt = tp ? strlen(tp) : 0;    p = new Tchar[cnt+1];
+  cnt = tp ? (int) strlen(tp) : 0;    p = new Tchar[cnt+1];
 
   if (!tp) {*p = 0; return;}
 

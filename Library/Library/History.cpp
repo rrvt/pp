@@ -5,9 +5,9 @@
 #include "History.h"
 #include "FileIO.h"
 #include "GetPathDlg.h"
+#include "PathDlgDsc.h"
 
-
-History history;                // There is only one of these!
+#include "MessageBox.h"
 
 
 void History::saveData() {

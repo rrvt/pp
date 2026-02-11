@@ -107,7 +107,7 @@ void CommandLine::examineY() {
 
 
 void CommandLine::help() {
-  _putts(_T("Version 1.17.8"));
+  _putts(_T("Version 1.17.10"));
   _putts(_T("USAGE: pp [/d] [/e] [/h] [/n] [/s] [/t [date] [time] <filename>..."));
   _putts(_T("or   : pp [/e] [/h] [/n] [/s] [/t [date] [time]] <\\*.ext> <\\*.\\*> ..."));
   _putts(_T("where: d - double side output (adjust margin odd/even pages)"));
